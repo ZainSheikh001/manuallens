@@ -6,7 +6,7 @@ These build a tiny PDF on the fly, so no manuals are needed.
 import json
 from pathlib import Path
 
-import fitz
+import pymupdf
 import pytest
 from PIL import Image
 
@@ -18,7 +18,7 @@ A4_WIDTH_PT, A4_HEIGHT_PT = 595, 842  # PDF points; 72 points = 1 inch
 @pytest.fixture
 def sample_pdf(tmp_path: Path) -> Path:
     """Three A4 pages: two with text, one blank (stands in for a scanned page)."""
-    doc = fitz.open()
+    doc = pymupdf.open()
     page1 = doc.new_page(width=A4_WIDTH_PT, height=A4_HEIGHT_PT)
     page1.insert_text((72, 100), "Cylinder head bolt torque: 25 Nm. Tighten in sequence.")
     page2 = doc.new_page(width=A4_WIDTH_PT, height=A4_HEIGHT_PT)

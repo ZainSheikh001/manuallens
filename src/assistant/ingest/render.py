@@ -12,7 +12,7 @@ import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
-import fitz  # PyMuPDF
+import pymupdf
 
 from assistant.config import settings
 
@@ -32,27 +32,36 @@ class PageRecord:
     has_text_layer: bool
 
 
-def render_manual(pdf_path: Path, manual_id: str, out_dir: Path, dpi: int = 150) -> list[PageRecord]:
-    """Render each page of one PDF to a PNG and reference it in a PageRecord.
+def render_manual(
+    pdf_path: Path, manual_id: str, out_dir: Path, dpi: int = 150
+) -> list[PageRecord]:
+    """Render each page of one PDF to a PNG and describe it in a PageRecord.
 
-    WEEK 1 EXERCISE: implement this function. `uv run pytest` tells you when it works.
-
-    Steps:
-      1. Create the folder out_dir/<manual_id>/ if it does not exist.
-      2. Open the PDF with fitz.open(pdf_path) and loop over its pages.
-         PyMuPDF counts pages from 0; PageRecord.page_number counts from 1.
-      3. For each page:
-           a. Render it:      pixmap = page.get_pixmap(dpi=dpi)
-           b. Save it as      out_dir/<manual_id>/page_0001.png  (4-digit, zero-padded)
-           c. Extract text:   page.get_text(), with surrounding whitespace stripped
-           d. Decide has_text_layer: True when the text has at least MIN_TEXT_CHARS characters
-           e. Append a PageRecord (width and height come from the pixmap)
-      4. Return the list of records in page order.
-
-    Before you run it, predict: how many pixels wide is an A4 page (595 points,
-    72 points per inch) at 150 DPI? The tests check your answer.
+    Returns the records in page order. Page numbers are 1-based.
     """
-    raise NotImplementedError("Week 1 exercise: implement render_manual")
+    manual_dir = out_dir / manual_id
+    manual_dir.mkdir(parents=True, exist_ok=True)
+
+    records: list[PageRecord] = []
+    with pymupdf.open(pdf_path) as doc:
+        for page_number, page in enumerate(doc, start=1):
+            pixmap = page.get_pixmap(dpi=dpi)
+            image_path = manual_dir / f"page_{page_number:04d}.png"
+            pixmap.save(image_path)
+
+            text = page.get_text().strip()
+            records.append(
+                PageRecord(
+                    manual_id=manual_id,
+                    page_number=page_number,
+                    image_path=str(image_path),
+                    text=text,
+                    width=pixmap.width,
+                    height=pixmap.height,
+                    has_text_layer=len(text) >= MIN_TEXT_CHARS,
+                )
+            )
+    return records
 
 
 def write_metadata(records: list[PageRecord], out_path: Path) -> None:
