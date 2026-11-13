@@ -96,19 +96,18 @@ uv run python -m assistant.ingest.render       # render pages to data/pages/
 
 ## Current status
 
-**Week 1 (M1 Foundations and data), just started.**
+**Week 1 (M1 Foundations and data), in progress.**
 
 Done:
 - Repository scaffold, `pyproject.toml`, Docker Compose with Qdrant, settings.
 - `src/assistant/ingest/download.py` (complete).
-- `tests/test_render.py` (complete; 9 tests, verified against a reference solution).
+- `src/assistant/ingest/render.py` (complete; all 9 tests pass). Zain asked for
+  `render_manual` to be written for him, so he still owes the three predictions
+  and a walkthrough of the code in his own words.
 
 To do, in order:
-1. Week 1 concept brief: PDF internals (embedded text versus scans), rendering
-   resolution (DPI), metadata design, what a vector database stores.
-2. **My exercise:** implement `render_manual` in `src/assistant/ingest/render.py`.
-   It currently raises `NotImplementedError`, so all 9 tests fail until I write it.
-3. Fill `data/manifest.csv` with 20 to 30 manuals (both categories) and run download and render.
-4. Exit criterion: 3,000 or more page images on disk with a complete manifest.
+1. Fill `data/manifest.csv` with 20 to 30 manuals (both categories) and run download and render.
+2. Exit criterion: 3,000 or more page images on disk with a complete manifest.
+3. Learning-log entry and the week 1 interview question.
 
 Update this section at the end of every session.
