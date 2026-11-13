@@ -49,6 +49,8 @@ from the PRD.
   the system must refuse when the manuals do not support an answer.
 - Python 3.11, type hints everywhere, `ruff` clean, tests with `pytest`.
 - Small commits with clear messages, one logical change each.
+- Commits are authored by Zain only: no co-author lines, session links or
+  AI tool names in commit messages, branch names or files.
 
 ## Decisions already made
 
