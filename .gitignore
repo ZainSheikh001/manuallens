@@ -1,0 +1,17 @@
+# Secrets
+.env
+
+# Manuals and everything derived from them stay out of Git (see PRD: Data plan)
+data/raw/
+data/pages/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Notebooks
+.ipynb_checkpoints/
